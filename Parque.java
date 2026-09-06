@@ -11,6 +11,21 @@ public class Parque {
         this.nombreEncargado = nombreEncargado;
         this.puntosAcceso = new PuntoAcceso[5];
     }
+
+    public void habilitarPuntoAcceso(int posicion, PuntoAcceso nuevoAcceso) {
+    if (posicion < 0 || posicion >= puntosAcceso.length) {
+        System.out.println("La posición no es válida.");
+        return;
+    }
+
+    if (puntosAcceso[posicion] != null) {
+        System.out.println("La posición ya está ocupada.");
+        return;
+    }else{
+    puntosAcceso[posicion] = nuevoAcceso;
+    System.out.println("Punto de acceso creado y habilitado.");
+    }
+}
     
 
 
