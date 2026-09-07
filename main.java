@@ -22,6 +22,50 @@ public class Main{
             nombreEncargado
         );
 
+        Menu menu = new Menu();
+        menu.mostrarMenu(parque);
+
         
     }
+
+    public static void crearPuntoAcceso(Scanner scanner, Parque parque) {
+        System.out.print("Ingrese la posición de su punto de acceso (1-5):");
+        int posicion = scanner.nextInt() - 1;
+        scanner.nextLine();
+
+        System.out.print("Código del punto de acceso: ");
+        int idAcceso = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Nombre del punto: ");
+        String nombreAcceso = scanner.nextLine();
+
+        System.out.print("Ubicación: ");
+        String ubicacion = scanner.nextLine();
+
+        PuntoAcceso nuevoAcceso = null;
+        while (nuevoAcceso == null){
+        try{
+
+        System.out.print("Capacidad máxima por hora: ");
+        int capacidadMaxima = scanner.nextInt();
+        scanner.nextLine();
+        
+
+        nuevoAcceso = new PuntoAcceso(
+            idAcceso, 
+            nombreAcceso, 
+            ubicacion, 
+            capacidadMaxima,
+            true
+        );
+
+        parque.habilitarPuntoAcceso(posicion, nuevoAcceso);
+
+        }catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+        } 
+    }
+        parque.habilitarPuntoAcceso(posicion, nuevoAcceso);      
+}
 }

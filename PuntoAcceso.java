@@ -7,6 +7,12 @@ public class PuntoAcceso {
     private boolean estado;
 
     public PuntoAcceso (int idAcceso, String nombreAcceso,String ubicacion, int capacidadMaxima, boolean estado ){
+
+        if (capacidadMaxima <= 0){
+            throw new IllegalArgumentException(
+                "La capacidad máxima debe ser mayor a 0"
+            );
+        }
         this.idAcceso = idAcceso;
         this.nombreAcceso = nombreAcceso;
         this.ubicacion = ubicacion;
