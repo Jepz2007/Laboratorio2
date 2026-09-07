@@ -19,6 +19,13 @@ public class PuntoAcceso {
         this.capacidadMaxima = capacidadMaxima;
         this.estado = estado;
     }
+    public void mostrarDatos(){
+        System.out.println("Código: " + idAcceso);
+        System.out.println("Nombre: " + nombreAcceso);
+        System.out.println("Ubicación: " + ubicacion);
+        System.out.println("Capacidad máxima: " + capacidadMaxima);
+        System.out.println("Estado: " + estado);
+    }
 
     
 
