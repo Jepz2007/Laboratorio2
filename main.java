@@ -22,6 +22,9 @@ public class Main{
             nombreEncargado
         );
 
+        Menu menu = new Menu();
+        menu.mostrarMenu(parque);
+
         
     }
 
@@ -40,12 +43,16 @@ public class Main{
         System.out.print("Ubicación: ");
         String ubicacion = scanner.nextLine();
 
+        PuntoAcceso nuevoAcceso = null;
+        while (nuevoAcceso == null){
+        try{
+
         System.out.print("Capacidad máxima por hora: ");
         int capacidadMaxima = scanner.nextInt();
         scanner.nextLine();
         
 
-        PuntoAcceso nuevoAcceso = new PuntoAcceso(
+        nuevoAcceso = new PuntoAcceso(
             idAcceso, 
             nombreAcceso, 
             ubicacion, 
@@ -54,5 +61,11 @@ public class Main{
         );
 
         parque.habilitarPuntoAcceso(posicion, nuevoAcceso);
+
+        }catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+        } 
+    }
+        parque.habilitarPuntoAcceso(posicion, nuevoAcceso);      
 }
 }

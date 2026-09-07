@@ -12,8 +12,8 @@ public class Menu {
         while (opcion != 9) {
             System.out.println();
             System.out.println("1: Habilitar punto de acceso");
-            System.out.print("¿Qué desea realizar?: ");
-            System.out.print("¿Qué desea realizar?: ");
+            System.out.println();
+            System.out.println("¿Qué desea realizar?: ");
 
             opcion = scanner.nextInt();
             scanner.nextLine();
