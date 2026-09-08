@@ -1,18 +1,21 @@
 package Lab2.Laboratorio2;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Parque {
     private int idParque;
     private String nombreParque;
     private String nombreEncargado;
     private PuntoAcceso[] puntosAcceso;
+    private ArrayList <Visitantes> visitantes;
 
     public Parque(int idParque, String nombreParque, String nombreEncargado){
         this.idParque = idParque;
         this.nombreParque = nombreParque;
         this.nombreEncargado = nombreEncargado;
         this.puntosAcceso = new PuntoAcceso[5];
+        this.visitantes = new ArrayList <>();
     }
 
     public void habilitarPuntoAcceso(int posicion, PuntoAcceso nuevoAcceso) {
@@ -46,7 +49,7 @@ public class Parque {
         int posicion = scanner.nextInt();
         scanner.nextLine();
 
-        if (posicion < 0 || posicion >= puntosAcceso.length) {
+        if (posicion < 1 || posicion > puntosAcceso.length) {
             System.out.println("La posición no es válida.");
             return;
         }
@@ -71,7 +74,7 @@ public class Parque {
         int posicion = scanner.nextInt();
         scanner.nextLine();
 
-        if (posicion < 0 || posicion >= puntosAcceso.length) {
+        if (posicion < 1 || posicion >= puntosAcceso.length) {
             System.out.println("La posición no es válida.");
             return;
         }
@@ -140,7 +143,7 @@ public class Parque {
         int posicion = scanner.nextInt();
         scanner.nextLine();
 
-        if (posicion < 0 || posicion >= puntosAcceso.length) {
+        if (posicion < 1 || posicion >= puntosAcceso.length) {
             System.out.println("La posición no es válida.");
             return;
         }
@@ -153,7 +156,167 @@ public class Parque {
         }
     }
     
+    public void registrarVisitante(Visitantes nuevoVisitante) {
+        if (nuevoVisitante == null) {
+            System.out.println(
+                "No se puede registrar un visitante inválido."
+            );
+            return;
+        }
 
+        for (Visitantes visitanteRegistrado : visitantes) {
+            if (visitanteRegistrado.getCodigoEntrada() == nuevoVisitante.getCodigoEntrada()) {
+                System.out.println("Ya existe un visitante con ese código de entrada.");
+                return;
+            }
+        }
 
-    
+        visitantes.add(nuevoVisitante);
+        System.out.println("Visitante registrado correctamente.");
+    }
+
+    public void consultarVisitantes() {
+        if (visitantes.isEmpty()) {
+            System.out.println(
+                "Todavía no existen visitantes registrados."
+            );
+            return;
+        }
+
+        System.out.println();
+        System.out.println("VISITANTES REGISTRADOS");
+
+        for (Visitantes visitante : visitantes) {
+            System.out.println();
+            visitante.mostrarDatos();
+        }
+    }
+
+    public Visitantes buscarVisitante(int codigoEntrada) {
+        for (Visitantes visitante : visitantes) {
+            if (visitante.getCodigoEntrada() == codigoEntrada) {
+                return visitante;
+            }
+        }
+        return null; 
+    }
+
+    public void consultarVisitantePorCodigo(int codigoEntrada) {
+        Visitantes visitanteEncontrado = buscarVisitante(codigoEntrada);
+
+        if (visitanteEncontrado == null) {
+            System.out.println("No existe un visitante con ese código de entrada.");
+            return;
+        }
+
+        System.out.println();
+        System.out.println("VISITANTE ENCONTRADO");
+        visitanteEncontrado.mostrarDatos();
+    }
+
+    public void modificarVisitante(int codigoActual, int nuevoCodigo, String nuevoNombre, int nuevaEdad, int nuevasAtracciones, int nuevosPuntos) {
+        Visitantes visitante =
+            buscarVisitante(codigoActual);
+
+        if (visitante == null) {
+            System.out.println("No existe un visitante con ese código de entrada.");
+            return;
+        }
+
+        Visitantes visitanteConNuevoCodigo = buscarVisitante(nuevoCodigo);
+
+        if (nuevoCodigo != codigoActual && visitanteConNuevoCodigo != null) {
+            System.out.println("Ya existe otro visitante con el nuevo código.");
+            return;
+        }
+
+        visitante.modificarDatos(nuevoCodigo, nuevoNombre, nuevaEdad, nuevasAtracciones, nuevosPuntos);
+
+        System.out.println(
+            "Visitante modificado correctamente."
+        );
+    }
+
+    public void eliminarVisitante(int codigoEntrada) {
+        Visitantes visitante = buscarVisitante(codigoEntrada);
+
+        if (visitante == null) {
+            System.out.println("No existe un visitante con ese código de entrada.");
+            return;
+        }
+
+        visitantes.remove(visitante);
+
+        System.out.println(
+            "Visitante eliminado correctamente."
+        );
+    }
+
+    public void mostrarEstadisticas() {
+        int cantidadPuntosHabilitados = 0;
+        PuntoAcceso puntoMayorCapacidad = null;
+
+        for (PuntoAcceso punto : puntosAcceso) {
+            if (punto != null) {
+                cantidadPuntosHabilitados++;
+
+                if (puntoMayorCapacidad == null || punto.getCapacidadMaxima() > puntoMayorCapacidad.getCapacidadMaxima()) {
+                    puntoMayorCapacidad = punto;
+                }
+            }
+        }
+
+        int espaciosDisponibles = puntosAcceso.length - cantidadPuntosHabilitados;
+
+        System.out.println();
+        System.out.println("ESTADÍSTICAS DEL PARQUE");
+
+        System.out.println("Puntos de acceso habilitados: " + cantidadPuntosHabilitados);
+
+        System.out.println("Espacios disponibles: " + espaciosDisponibles);
+
+        if (puntoMayorCapacidad == null) {
+            System.out.println("No existen puntos de acceso habilitados.");
+        } else {
+            System.out.println();
+            System.out.println("Punto de acceso con mayor capacidad:");
+            puntoMayorCapacidad.mostrarDatos();
+        }
+
+        System.out.println();
+        System.out.println("Visitantes registrados: " + visitantes.size());
+
+        if (visitantes.isEmpty()) {
+            System.out.println("No existen visitantes para calcular estadísticas.");
+            return;
+        }
+
+        Visitantes visitanteMayorPuntos = visitantes.get(0);
+        Visitantes visitanteMayorAtracciones = visitantes.get(0);
+        int sumaEdades = 0;
+
+        for (Visitantes visitante : visitantes) {
+            sumaEdades += visitante.getEdad();
+
+            if (visitante.getPuntosAcumulados() > visitanteMayorPuntos.getPuntosAcumulados()) {
+                visitanteMayorPuntos = visitante;
+            }
+
+            if (visitante.getCantidadAtraccionesVisitadas() > visitanteMayorAtracciones.getCantidadAtraccionesVisitadas()) {
+                visitanteMayorAtracciones = visitante;
+            }
+        }
+
+        double promedioEdad = (double) sumaEdades / visitantes.size();
+
+        System.out.println();
+        System.out.println("Visitante con más puntos acumulados:");
+        visitanteMayorPuntos.mostrarDatos();
+
+        System.out.println();
+        System.out.println("Visitante con más atracciones visitadas:");
+        visitanteMayorAtracciones.mostrarDatos();
+
+        System.out.printf("%nPromedio de edad: %.2f%n", promedioEdad);
+    }
 }
