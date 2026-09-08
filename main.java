@@ -27,6 +27,7 @@ public class Main{
 
         
     }
+    
 
     public static void crearPuntoAcceso(Scanner scanner, Parque parque) {
         System.out.print("Ingrese la posición de su punto de acceso (1-5):");
